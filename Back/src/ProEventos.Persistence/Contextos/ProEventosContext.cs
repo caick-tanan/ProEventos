@@ -17,7 +17,7 @@ namespace ProEventos.Persistence.Contextos
         {
             modelBuilder.Entity<PalestranteEvento>().HasKey(PE => new {PE.EventoId, PE.PalestranteId});  // Essa classe no banco sera a classe de junção entre os Eventos e os Palestrantes
 
-             modelBuilder.Entity<Evento>()
+            modelBuilder.Entity<Evento>()
                 .HasMany(e => e.RedesSociais)
                 .WithOne(rs => rs.Evento)
                 .OnDelete(DeleteBehavior.Cascade); // Deletou um Evento deleta também a rede social de forma cascateada

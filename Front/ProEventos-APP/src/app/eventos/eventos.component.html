@@ -1,6 +1,4 @@
-<h2>Eventos</h2>
-<hr>
-
+<app-titulo [titulo]="'Eventos'"></app-titulo>
 <div class="form-inline">
   <div class="form-group mb-2">
     <label class="mr-2">Filtro: </label>
@@ -13,7 +11,8 @@
     <tr>
       <th><button type="button" class="btn btn-outline-light btn-sm"
         (click)="alterarImagem()">
-        {{!showImg ? 'Exibir' : 'Ocultar'}}
+        <i class="{{!showImg ? 'fa fa-eye' : 'fa fa-eye-slash'}}"></i>
+          {{!showImg ? 'Exibir' : 'Ocultar'}}
         <!-- Se o showImg for true vai aparecer esconder e se for false o texto do botão será mostrar -->
       </button></th>
       <th>#</th>
@@ -38,15 +37,19 @@
         >
       </td>
       <!-- Intrerpolação -->
-      <td>{{evento.eventoId}}</td>
+      <td>{{evento.id}}</td>
       <td>{{evento.tema}}</td>
       <td>{{evento.local}}</td>
-      <td>{{evento.dataEvento}}</td>
+      <td>{{evento.dataEvento | DateFormatPipe}}</td>
       <td>{{evento.qtdPessoas}}</td>
-      <td>{{evento.lote}}</td>
+      <td>{{evento.lotes[0].nome | uppercase}}</td>
       <td>
-        <button type="button" class="btn btn-primary btn-sm mr-2">Editar</button>
-        <button type="button" class="btn btn-danger btn-sm mr-2">Excluir</button>
+        <button type="button" class="btn btn-primary btn-sm mr-2">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button type="button" class="btn btn-danger btn-sm mr-2" tooltip="Excluir" (click)="openModal(template)">
+          <i class="fa fa-trash"></i>
+        </button>
       </td>
     </tr>
   </tbody>
@@ -60,3 +63,11 @@
 </table>
 
 <!-- {{eventos | json}} -> Vai mostrar todas as informações vindo de eventos -->
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Tem certeza que quer deletar este Evento?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()">Sim</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">Não</button>
+  </div>
+</ng-template>
