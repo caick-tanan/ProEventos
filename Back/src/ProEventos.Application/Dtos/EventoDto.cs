@@ -39,6 +39,7 @@ namespace ProEventos.API.Dtos
 
 
 
+
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [Display(Name = "e-mail")]
         [EmailAddress(ErrorMessage = "É necessário ser um {0} válido")]
