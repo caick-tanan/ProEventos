@@ -36,8 +36,12 @@ namespace ProEventos.API
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //nessa etapa serve para referênciar direto do domínio da minha aplicação o Profile que eu criei
             services.AddScoped<IEventoService, EventoService>(); // Adiciono no Scopo que todas as vezes que ele for fazer a injeção ele vai pegar o EventoService
+            services.AddScoped<ILoteService, LoteService>();
+            
             services.AddScoped<IGeralPersist, GeralPersist>();
             services.AddScoped<IEventoPersist, EventoPersist>();
+            services.AddScoped<ILotePersist, LotePersist>();
+            
             services.AddCors();
             services.AddSwaggerGen(c =>
             {
