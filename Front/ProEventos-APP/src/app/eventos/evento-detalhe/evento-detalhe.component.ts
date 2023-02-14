@@ -1,4 +1,3 @@
-import { NUMBER_TYPE } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +5,7 @@ import { Evento } from '@app/models/Evento';
 import { Lote } from '@app/models/Lote';
 import { EventoService } from '@app/Services/evento.service';
 import { LoteService } from '@app/Services/lote.service';
+import { environment } from '@environments/environment';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -20,10 +20,11 @@ export class EventoDetalheComponent implements OnInit {
   modalRef: BsModalRef;
   eventoId: number;
   evento = {} as Evento;
-
   form: FormGroup;
   estadoSalvar = 'post'; // aqui vai iniciar vazio por isso está post = (Adicionar)
   loteAtual = {id: 0, nome: '', indice: 0}
+  imagemURL = 'assets/upload.png';
+  file = File;
 
   get modoEditar(): boolean {
     return this.estadoSalvar === 'put';
@@ -83,6 +84,10 @@ export class EventoDetalheComponent implements OnInit {
         (evento: Evento) => {
           this.evento  = {...evento}; // Ele vai pegar todos os itens de evento e atribuir para o this.evento
           this.form.patchValue(this.evento);
+          if(this.evento.imageURL !== '')
+          {
+           this.imagemURL = environment.apiURL + 'Resources/Images/' + this.evento.imageURL;
+          }
           this.carregarLotes(); // aqui vai carregar as informações dos lotes que já foram preenchidas conforme o método criado
         },
         (error: any) => {
@@ -121,7 +126,7 @@ export class EventoDetalheComponent implements OnInit {
         local: ['', Validators.required],
         dataEvento: ['', Validators.required],
         qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
-        imageURL: ['', Validators.required],
+        imageURL: [''],
         email: ['',
         [Validators.required, Validators.email]],
         telefone: ['', Validators.required],
@@ -230,6 +235,32 @@ export class EventoDetalheComponent implements OnInit {
           }
           ).add(() => this.spinner.hide());
       }
+    }
+
+    onFileChange(ev: any): void
+    {
+      const reader = new FileReader();
+
+      reader.onload = (event: any) => this.imagemURL = event.target.result; // Isso serve para carregar a imagem escolhida na tela alterando o ícone de nuvem para a imagem selecionado pelo usuário
+
+      this.file = ev.target.files; // Vou atribuir para a minha variável file todos os arquivos que estão no meu input do meu HTML
+      reader.readAsDataURL(this.file[0]);
+
+      this.uploadImagem();
+    }
+
+    uploadImagem(): void {
+      this.spinner.show();
+      this.eventoService.postUpload(this.eventoId, this.file).subscribe(
+        () => {
+          this.carregarEvento();
+          this.toastr.success('Imagem atualizada com Sucesso', 'Sucesso!');
+        },
+        (error: any) => {
+          this.toastr.error('Erro ao fazer upload de imagem', 'Erro!');
+          console.log(error);
+        }
+      ).add(() => this.spinner.hide());
     }
 }
 
