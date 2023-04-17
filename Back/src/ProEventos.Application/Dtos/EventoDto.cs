@@ -45,6 +45,9 @@ namespace ProEventos.API.Dtos
         [EmailAddress(ErrorMessage = "É necessário ser um {0} válido")]
         public string Email { get; set; }
 
+        public int UserId { get; set; }  
+
+        public UserDto userDto { get; set; }
 
         public IEnumerable<LoteDto> Lotes { get; set; }
         public IEnumerable<RedeSocialDto> RedesSociais { get; set; }
