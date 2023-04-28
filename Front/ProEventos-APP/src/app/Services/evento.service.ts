@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Evento } from '../models/Evento';
@@ -17,7 +17,7 @@ export class EventoService {
     return this.http
       .get<Evento[]>(this.baseURL)
       // tslint:disable-next-line: max-line-length
-      .pipe(take(1)); // O pipe serve para que seja feita apenas a quantidade de chamdas que vc determinou no take e depois ele será desinscrito do observable
+      .pipe(take(1)); // O pipe serve para que seja feita apenas a quantidade de chamadas que vc determinou no take e depois ele será desinscrito do observable
   }
 
   public getEventosByTema(tema: string): Observable<Evento[]> {
