@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using ProEventos.API.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using ProEventos.Persistence.Models;
 
 namespace ProEventos.API.Controllers
 {
@@ -32,12 +33,14 @@ namespace ProEventos.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get() // IActionResult serve para retornar em status code ex: 404(Error), 200(Sucesso) ...
+        public async Task<IActionResult> Get([FromQuery]PageParams pageParams) // IActionResult serve para retornar em status code ex: 404(Error), 200(Sucesso) ...
         {
             try
             {
-                var eventos = await _eventoService.GetAllEventosAsync(User.GetUserId(), true); // retorna todos os eventos com os participantes pois está "true"
+                var eventos = await _eventoService.GetAllEventosAsync(User.GetUserId(), pageParams, true); // retorna todos os eventos com os participantes pois está "true"
                 if (eventos == null) return NoContent(); // caso não encontre aparecerá no front o error 404
+
+                Response.AddPagination(eventos.CurrentPage, eventos.PageSize, eventos.TotalCount, eventos.TotalPages);
 
                 return Ok(eventos); // o "OK" serve como se fosse o sucesso utilizando o IActionResult
             }
@@ -54,23 +57,6 @@ namespace ProEventos.API.Controllers
             try
             {
                 var evento = await _eventoService.GetEventoByIdAsync(User.GetUserId(), id, true);
-                if (evento == null) return NoContent();
-
-                return Ok(evento);
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
-            }
-        }
-
-        [HttpGet("{tema}/tema")] // aqui se altera a rota adicionando o /tema para que ele não confunda
-        public async Task<IActionResult> GetByTema(string tema)
-        {
-            try
-            {
-                var evento = await _eventoService.GetAllEventosByTemaAsync(User.GetUserId(), tema, true);
                 if (evento == null) return NoContent();
 
                 return Ok(evento);
