@@ -12,8 +12,10 @@ namespace ProEventos.API.Helpers
         {
             CreateMap<Evento, EventoDto>().ReverseMap(); // O ReverseMap() serve para fazer com que tanto o Evento possa passar para o Dto quando vice e versa 
             CreateMap<Lote, LoteDto>().ReverseMap();  
-            CreateMap<Palestrante, PalestranteDto>().ReverseMap();  
             CreateMap<RedeSocial, RedeSocialDto>().ReverseMap();  
+            CreateMap<Palestrante, PalestranteDto>().ReverseMap();  
+            CreateMap<Palestrante, PalestranteAddDto>().ReverseMap();  
+            CreateMap<Palestrante, PalestranteUpdateDto>().ReverseMap();  
             
             CreateMap<User, UserDto>().ReverseMap(); 
             CreateMap<User, UserLoginDto>().ReverseMap(); 
