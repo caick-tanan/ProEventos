@@ -72,6 +72,11 @@ export class EventoListaComponent implements OnInit {
         } as Pagination;
 
         this.carregarEventos();
+
+        setTimeout(() => {
+          /** spinner ends after 5 seconds */
+          this.spinner.hide();
+        }, 5000);
       }
 
       alterarImagem(): void{
@@ -96,8 +101,9 @@ export class EventoListaComponent implements OnInit {
             (error: any) => {
               this.spinner.hide();
               this.toastr.error('Erro ao Carregar os Eventos', 'Erro!');
-            },
-            ).add(() => this.spinner.hide());
+            }
+            )
+            .add(() => this.spinner.hide());
           }
 
           openModal(event: any, template: TemplateRef<any>, eventoId: number): void {

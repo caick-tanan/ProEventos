@@ -126,7 +126,7 @@ export class EventoDetalheComponent implements OnInit {
         local: ['', Validators.required],
         dataEvento: ['', Validators.required],
         qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
-        imageURL: [''],
+        imagemURL: [''],
         email: ['',
         [Validators.required, Validators.email]],
         telefone: ['', Validators.required],
@@ -179,6 +179,10 @@ export class EventoDetalheComponent implements OnInit {
         }
       ).add(() => this.spinner.hide());
 
+    }
+
+    public mudarValorData(value: Date, indice: number, campo: string): void {
+      this.lotes.value[indice][campo] = value;
     }
 
     public retornaTituloLote(nome: string): string{

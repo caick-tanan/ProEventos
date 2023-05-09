@@ -1,9 +1,7 @@
-import { ValidatorField } from './../../../helpers/ValidatorField';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControlOptions, FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AccountService } from '@app/Services/account.service';
 import { UserUpdate } from '@app/models/identity/UserUpdate';
+import { environment } from '@environments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
@@ -13,83 +11,57 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./perfil.component.scss']
 })
 export class PerfilComponent implements OnInit {
+  public usuario = {} as UserUpdate;
+  public file: File;
+  public imageURL = '';
 
-  userUpdate = {} as UserUpdate;
-  form!: FormGroup;
+  public get ehPalestrante(): boolean {
+    return this.usuario.funcao === 'Palestrante'; // Se for palestrante retorna True
+  }
 
-  constructor(private fb: FormBuilder,
-              public accountService: AccountService,
-              public router: Router,
-              public toaster: ToastrService,
-              public spinner: NgxSpinnerService) {}
+  constructor(private spinner: NgxSpinnerService,
+              private toastr: ToastrService,
+              private accountService:  AccountService
+    ) {}
 
   ngOnInit(): void {
-    this.validation();
-    this.carregarUsuario();
   }
 
-  private carregarUsuario(): void {
-    this.spinner.show();
-    this.accountService
-      .getUser()
-      .subscribe(
-        (userRetorno: UserUpdate) => {
-          console.log(userRetorno);
-          this.userUpdate = userRetorno;
-          this.form.patchValue(this.userUpdate);
-          this.toaster.success('Usuário Carregado', 'Sucesso');
+  public setFormValue(usuario: UserUpdate): void{
+    this.usuario = usuario;
+    if(this.usuario.imageURL)
+      this.imageURL = environment.apiURL + `resources/perfil/${this.usuario.imageURL}`;
+    else
+      this.imageURL = './assets/img/perfil.png';
+  }
+
+  onFileChange(ev: any): void
+    {
+      const reader = new FileReader();
+
+      reader.onload = (event: any) => this.imageURL = event.target.result; // Isso serve para carregar a imagem escolhida na tela alterando o ícone de nuvem para a imagem selecionado pelo usuário
+
+      this.file = ev.target.files; // Vou atribuir para a minha variável file todos os arquivos que estão no meu input do meu HTML
+      reader.readAsDataURL(this.file[0]);
+
+      this.uploadImagem();
+    }
+
+    uploadImagem(): void {
+      this.spinner.show();
+      this.accountService.postUpload(this.file).subscribe(
+        () => {
+          this.toastr.success('Imagem atualizada com Sucesso', 'Sucesso!');
         },
-        (error) => {
-          console.error(error);
-          this.toaster.error('Usuário não Carregado', 'Erro');
-          this.router.navigate(['/dashboard']);
+        (error: any) => {
+          this.toastr.error('Erro ao fazer upload de imagem', 'Erro!');
+          console.log(error);
         }
-      )
-      .add(() => this.spinner.hide());
-  }
-
-  private validation(): void {
-    const formOptions: AbstractControlOptions = {
-      validators: ValidatorField.MustMatch('password', 'confirmePassword')
-    };
-
-    this.form = this.fb.group({
-      userName: [''],
-      titulo: ['NaoInformado', Validators.required],
-      primeiroNome: ['', Validators.required],
-      ultimoNome: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required]],
-      descricao: ['', Validators.required],
-      funcao: ['NaoInformado', Validators.required],
-      password: ['', [Validators.minLength(4), Validators.nullValidator]],
-      confirmePassword: ['', Validators.nullValidator]
-    }, formOptions);
-  }
+      ).add(() => this.spinner.hide());
+    }
 
   // Conveniente para pegar um FormField apenas com a letra F
-  get f(): any { return this.form.controls; }
-
-  onSubmit(): void {
-    this.atualizarUzuario();
-  }
-
-  public atualizarUzuario(){
-    this.userUpdate = { ...this.form.value}
-    this.spinner.show();
-
-    this.accountService.updateUser(this.userUpdate).subscribe(
-      () => this.toaster.success('Usuário atualizado!', 'Sucesso'),
-      (error) => {
-        this.toaster.error(error.error);
-        console.error(error);
-      }
-    )
-    .add(() => this.spinner.hide());
-  }
-
-  public resetForm(event: any): void {
-    event.preventDefault();
-    this.form.reset();
+  get f(): any {
+    return ''
   }
 }

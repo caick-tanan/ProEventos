@@ -5,10 +5,10 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { User } from '@app/models/identity/User';
 import { AccountService } from '@app/Services/account.service';
-import { take } from 'rxjs/operators';
+import { catchError, take } from 'rxjs/operators';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -32,6 +32,14 @@ export class JwtInterceptor implements HttpInterceptor {
       }
     });
 
-    return next.handle(request); // Retonar o request para o intercept
+    return next.handle(request).pipe( // Retonar o request para o intercept
+      catchError(error => {
+        if(error){
+          localStorage.removeItem('user')
+        }
+        return throwError(error);
+      })
+    );
+
   }
 }
