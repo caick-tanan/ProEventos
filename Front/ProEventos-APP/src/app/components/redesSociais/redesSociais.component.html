@@ -4,7 +4,7 @@
     <div formArrayName="redesSociais" *ngFor="let redeSocial of redesSociais.controls; let i=index">
       <fieldset [formGroupName]="i" class="form-group">
         <legend class="d-flex justify-content-between capitalize">
-          {{ retornaTitulo(redesSociais.get(i+'.nome').value) }}
+          <i class="fab fa-youtube{{ retornaTitulo(redesSociais.get(i+'.nome').value) }}"></i>{{ retornaTitulo(redesSociais.get(i+'.nome').value) }}
           <button class="btn btn-sm btn-warning mb-1" (click)="removerRedeSocial(template, i)">remove</button>
         </legend>
         <div class="row">
@@ -12,7 +12,7 @@
             <label>Nome</label>
             <select class="form-control" [ngClass]="cssValidator(redesSociais.get(i+'.nome'))" formControlName="nome">
               <option value="">Selecione</option>
-              <option value="fab fa-youtube" >Youtube</option>
+              <option value="fab fa-youtube">Youtube</option>
               <option value="fab fa-instagram">Instagram</option>
               <option value="fab fa-facebook">Facebook</option>
               <option value="fab fa-twitter">Twitter</option>

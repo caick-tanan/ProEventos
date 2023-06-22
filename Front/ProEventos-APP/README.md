@@ -1,27 +1,39 @@
-# ProEventosAPP
+### ProEventos - Curso da Udemy
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.4.
+# Seja Full-Stack com .NET Web API e Angular + EF Core - V2.0 - [Course](http://www.udemy.com/course/angular-dotnetcore-efcore/?referralCode=F44264DF39DEEE45EC50).
 
-## Development server
+This is all of the files for our Course about Angular, WebAPI and More
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+The Summary is:
 
-## Code scaffolding
+01. Introdução ao Curso
+02. NET Core 5
+03. EF Core 5 - Introdução
+04. Angular - Introdução
+05. Angular - Interpolação, Diretivas e Binding
+06. .NET 5 - Múltiplas Camadas
+07. Angular - Organizar, Rota, Alertas e Mais
+08. Angular - Reactive Forms e Novo Layout
+09. DTOs & Data Annotations
+10. Angular - Registrando Evento
+11. Angular e .NET - Eventos e Lotes
+12. Upload de Imagens
+13. Asp .NET Core Identity - Autenticar e Autorizar - (TOKEN - JWT)
+14. Angular + .NET Core Identity + JWT
+15. Paginação e Filtros
+16. Palestrantes e Redes Sociais - Backend
+17. Palestrantes e Redes Sociais - Frontend
+18. Palestrantes e Eventos
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Basic Setup
 
-## Build
+1. [Install Node.js](https://nodejs.org/)
+1. [Install .NET Core 5](https://dotnet.microsoft.com/download/)
+2. Fork the [ProEventos](https://github.com/vsandrade/ProEventos/fork)
+3. Clone the repo you just forked.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
+## License
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+This theme is free and open source software, distributed under the The MIT License. So feel free to use this files on your site without linking back to me or using a disclaimer.
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
